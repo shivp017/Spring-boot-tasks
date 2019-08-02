@@ -48,29 +48,56 @@ import java.util.Optional;
         }
 //use getMapping to get all tracks
         @GetMapping("tracks")
-        public ResponseEntity<?> getAllTrack() {
-            return new ResponseEntity<List<Track>>(trackService.getAllTracks(), HttpStatus.OK);
+        public ResponseEntity<?> getAllTrack() throws Exception {
+            ResponseEntity responseEntity;
+
+            try {
+                responseEntity = new ResponseEntity<>(trackService.getAllTracks(), HttpStatus.OK);
+            } catch (Exception ex) {
+                responseEntity = new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }return responseEntity;
         }
+
         //Use DeleteMapping to delete a particular track given by id
         @DeleteMapping("track/{id}")
-        public ResponseEntity<?> deleteTrackById(@PathVariable int id) {
-            Optional<Track> trackRemoved = Optional.of(trackService.deleteTrackById(id));
-            return new ResponseEntity<>(trackRemoved, HttpStatus.OK);
+        public ResponseEntity<?> deleteTrackById(@PathVariable int id) throws TrackNotFoundException {
+            ResponseEntity responseEntity;
+            try{
+                responseEntity = new ResponseEntity<>(trackService.deleteTrackById(id), HttpStatus.OK);}
+            catch (Exception ex){
+                responseEntity = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+            }
+
+            return responseEntity;
         }
 
 
     //Use PatchMapping to update the element in database
     @PatchMapping("/track/{id}")
-    public ResponseEntity<?> updateTrack(@RequestBody Track track, @PathVariable("id") int id) {
-        Track track1 = trackService.updateTrackById(id, track);
-        return new ResponseEntity < > (track1, HttpStatus.OK);
+    public ResponseEntity<?> updateTrack(@RequestBody Track track, @PathVariable("id") int id) throws TrackNotFoundException{
+        ResponseEntity responseEntity;
+        try{
+            responseEntity = new ResponseEntity<>(trackService.updateTrackById(id, track), HttpStatus.OK);}
+        catch (Exception ex){
+            responseEntity = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+        return responseEntity;
     }
 ///get track by name
     @GetMapping("tracks/{name}")
     public ResponseEntity<?> findByName(@PathVariable("name") String name) {
-        List<Track> foundTracks=trackService.findByName(name);
-        return new ResponseEntity<List<Track>>(foundTracks, HttpStatus.FOUND);
-    }
+        ResponseEntity responseEntity;
+
+            try {
+                List<Track> track=trackService.findByName(name);
+                responseEntity=new ResponseEntity<>(track,HttpStatus.OK);
+            }
+            catch (Exception ex){
+                responseEntity=new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
+            }
+            return responseEntity;
+        }
 
 
     }
