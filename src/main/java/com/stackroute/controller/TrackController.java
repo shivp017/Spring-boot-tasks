@@ -1,6 +1,8 @@
 package com.stackroute.controller;
 
 import com.stackroute.domain.Track;
+import com.stackroute.exceptions.TrackAlreadyExistsException;
+import com.stackroute.exceptions.TrackNotFoundException;
 import com.stackroute.service.TrackService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ import java.util.Optional;
                 Track savedTrack=trackService.saveTrack(track);
                 return new ResponseEntity<>(savedTrack, HttpStatus.OK);
             }
-            catch (Exception ex){
+            catch (TrackAlreadyExistsException ex){
                 return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
             }
         }
@@ -40,7 +42,7 @@ import java.util.Optional;
                 responseEntity=new ResponseEntity<>(track,HttpStatus.OK);
             }
            catch (Exception ex){
-                responseEntity=new ResponseEntity<>(ex.getMessage(),HttpStatus.CONFLICT);
+                responseEntity=new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
            }
             return responseEntity;
         }
