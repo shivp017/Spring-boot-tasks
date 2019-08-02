@@ -1,8 +1,11 @@
 package com.stackroute.domain;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 @Entity
+@Component
 public class Track {
 //variable declared for track id ,track name and comments
     @Id
