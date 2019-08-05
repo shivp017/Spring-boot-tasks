@@ -34,7 +34,7 @@ public class AppListener implements ApplicationListener<ContextRefreshedEvent> {
      track2.setId(2);
      track2.setComments("hmmmmmmmmm");
      trackRepository.save(track2);
-     Track track3=new Track(3,"pqr","Armaan mallick");
+     Track track3= new Track(3,"pqr","Armaan mallick");
      trackRepository.save(track3);
 
     }
