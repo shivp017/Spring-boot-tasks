@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/trackservice.iml" filepath="$PROJECT_DIR$/trackservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/userservice.iml" filepath="$PROJECT_DIR$/userservice.iml" />
     </modules>
   </component>

@@ -26,6 +26,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 @RunWith(SpringRunner.class)
 @WebMvcTest
 public class TrackControllerTest {
@@ -39,17 +40,17 @@ public class TrackControllerTest {
     @InjectMocks
     private TrackController trackController;
 
-    private List<Track> list =null;
+    private List<Track> list = null;
 
     @Before
-    public void setUp(){
+    public void setUp() {
 
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(trackController).build();
+//        mockMvc = MockMvcBuilders.standaloneSetup(trackController).build();
         track = new Track();
-        track.setId(10);
-        track.setName("Jonny");
-        track.setComments("comments22");
+        track.setId(1);
+        track.setName("Abc");
+        track.setComments("Arjit singh");
         list = new ArrayList();
 
         list.add(track);
@@ -60,13 +61,12 @@ public class TrackControllerTest {
         when(trackService.saveTrack(any())).thenReturn(track);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/track")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
-
-
     }
+
     @Test
-    public void saveUserFailure() throws Exception {
+    public void saveTrackFailure() throws Exception {
         when(trackService.saveTrack(any())).thenThrow(TrackAlreadyExistsException.class);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/track")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
@@ -75,7 +75,7 @@ public class TrackControllerTest {
     }
 
     @Test
-    public void getAllUser() throws Exception {
+    public void getAllTracks() throws Exception {
         when(trackService.getAllTracks()).thenReturn(list);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/tracks")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
@@ -85,14 +85,11 @@ public class TrackControllerTest {
     }
 
 
-    private static String asJsonString(final Object obj)
-    {
-        try{
+    private static String asJsonString(final Object obj) {
+        try {
             return new ObjectMapper().writeValueAsString(obj);
-
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
 }
